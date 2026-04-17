@@ -1,5 +1,5 @@
 import type { ValidateSqlRequest, ValidateSqlResponse } from "@hex/sql-contracts";
-import { ValidateSqlUseCase } from "../application/use-cases/validate-sql.use-case";
+import { ValidateSqlUseCase } from "@/src/application/sql-validator/use-cases/validate-sql.use-case";
 
 export class SqlValidatorController {
   constructor(private readonly validateSqlUseCase: ValidateSqlUseCase) {}

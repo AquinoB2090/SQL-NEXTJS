@@ -1,4 +1,4 @@
-import { SchemaRepositoryPort } from "../../domain/ports/schema-repository.port";
+import { SchemaRepositoryPort } from "@/src/domain/sql-validator/ports/schema-repository.port";
 
 export class InMemorySchemaRepository implements SchemaRepositoryPort {
   private readonly schema: Record<string, string[]> = {

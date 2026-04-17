@@ -1,5 +1,5 @@
-import { ValidationResult } from "../entities/validation-result";
-import { SchemaRepositoryPort } from "../ports/schema-repository.port";
+import { ValidationResult } from "@/src/domain/sql-validator/entities/validation-result";
+import { SchemaRepositoryPort } from "@/src/domain/sql-validator/ports/schema-repository.port";
 
 export class SqlValidationService {
   validate(query: string, schema: SchemaRepositoryPort): ValidationResult {

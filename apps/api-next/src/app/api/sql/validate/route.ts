@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createSqlValidatorController } from "@/src/modules/sql-validator/composition/sql-validator.module";
+import { createSqlValidatorController } from "@/src/infrastructure/composition/sql-validator.module";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -18,4 +18,3 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json(result, { status: 200 });
 }
-

@@ -1,7 +1,7 @@
 import type { ValidateSqlResponse } from "@hex/sql-contracts";
-import { ValidateSqlInput } from "../dto/validate-sql.dto";
-import { SqlValidationService } from "../../domain/services/sql-validation.service";
-import { SchemaRepositoryPort } from "../../domain/ports/schema-repository.port";
+import { ValidateSqlInput } from "@/src/application/sql-validator/dto/validate-sql.dto";
+import { SqlValidationService } from "@/src/domain/sql-validator/services/sql-validation.service";
+import { SchemaRepositoryPort } from "@/src/domain/sql-validator/ports/schema-repository.port";
 
 export class ValidateSqlUseCase {
   constructor(
