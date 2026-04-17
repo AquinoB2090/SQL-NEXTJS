@@ -1,0 +1,14 @@
+{
+  "name": "hexagonal-starter",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev -w apps/api-next",
+    "dev:web": "npm run dev -w apps/web-react",
+    "build": "npm run build -ws"
+  }
+}
