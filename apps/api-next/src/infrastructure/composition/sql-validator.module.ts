@@ -3,6 +3,7 @@ import { SqlValidationService } from "@/src/domain/sql-validator/services/sql-va
 import { SqlValidatorController } from "@/src/infrastructure/http/controllers/sql-validator.controller";
 import { InMemorySchemaRepository } from "@/src/infrastructure/sql-validator/repositories/in-memory-schema.repository";
 
+// Composition Root: unico lugar donde se "cablean" dependencias concretas.
 export function createSqlValidatorController(): SqlValidatorController {
   const validationService = new SqlValidationService();
   const schemaRepository = new InMemorySchemaRepository();

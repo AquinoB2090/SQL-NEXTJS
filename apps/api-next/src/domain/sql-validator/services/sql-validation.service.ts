@@ -1,6 +1,7 @@
 import { ValidationResult } from "@/src/domain/sql-validator/entities/validation-result";
 import { SchemaRepositoryPort } from "@/src/domain/sql-validator/ports/schema-repository.port";
 
+// Domain Service: reglas puras de validacion SQL (sin framework ni IO).
 export class SqlValidationService {
   validate(query: string, schema: SchemaRepositoryPort): ValidationResult {
     const trimmed = query.trim();
@@ -15,6 +16,7 @@ export class SqlValidationService {
       };
     }
 
+    // MVP sintactico: soporta SELECT columnas FROM tabla [WHERE ...]
     const selectPattern = /^SELECT\s+(.+?)\s+FROM\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:\s+WHERE\s+.+)?\s*;?$/i;
     const match = trimmed.match(selectPattern);
 
@@ -36,6 +38,7 @@ export class SqlValidationService {
 
     const errors: string[] = [];
 
+    // Fase semantica: valida existencia de tabla/columnas via puerto de esquema.
     if (!schema.existsTable(tableName)) {
       errors.push(`La tabla '${tableName}' no existe.`);
     }

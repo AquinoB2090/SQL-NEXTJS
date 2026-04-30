@@ -32,7 +32,16 @@ apps/
   web-react/
 packages/
   sql-contracts/
+docs/
+  sprint-01/
+  architecture/
 ```
+
+## Entregables Sprint 01
+
+- Alcance MVP y exclusiones: `docs/sprint-01/mvp-scope.md`
+- Arquitectura hexagonal (domain/app/infra): `docs/architecture/hexagonal-domain-app-infra.md`
+- Contratos compartidos FE/BE: `packages/sql-contracts/src/index.ts`
 
 ## Instalacion
 

@@ -1,5 +1,6 @@
 import { SchemaRepositoryPort } from "@/src/domain/sql-validator/ports/schema-repository.port";
 
+// Adapter de infraestructura: implementa el puerto con datos en memoria (MVP).
 export class InMemorySchemaRepository implements SchemaRepositoryPort {
   private readonly schema: Record<string, string[]> = {
     usuarios: ["id", "nombre", "edad", "ciudad"],

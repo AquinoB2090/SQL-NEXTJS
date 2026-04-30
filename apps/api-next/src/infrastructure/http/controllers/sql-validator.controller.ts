@@ -1,22 +1,30 @@
-import type { ValidateSqlRequest, ValidateSqlResponse } from "@hex/sql-contracts";
+import type {
+  ValidateSqlApiResponse,
+  ValidateSqlRequest
+} from "@hex/sql-contracts";
 import { ValidateSqlUseCase } from "@/src/application/sql-validator/use-cases/validate-sql.use-case";
 
 export class SqlValidatorController {
   constructor(private readonly validateSqlUseCase: ValidateSqlUseCase) {}
 
-  handle(body: unknown): ValidateSqlResponse {
+  // Controller hexagonal: valida formato de entrada y llama a application.
+  handle(body: unknown): ValidateSqlApiResponse {
     const payload = body as Partial<ValidateSqlRequest>;
 
     if (typeof payload.query !== "string") {
       return {
-        valid: false,
-        phase: "LEXICAL",
-        errors: ["El campo 'query' es obligatorio y debe ser string."],
-        warnings: [],
-        parsed: { table: null, columns: [] }
+        ok: false,
+        error: {
+          code: "INVALID_QUERY_PAYLOAD",
+          message: "El campo 'query' es obligatorio y debe ser string."
+        }
       };
     }
 
-    return this.validateSqlUseCase.execute({ query: payload.query });
+    return {
+      ok: true,
+      // El caso de uso ya devuelve un DTO orientado al contrato compartido.
+      data: this.validateSqlUseCase.execute({ query: payload.query })
+    };
   }
 }
