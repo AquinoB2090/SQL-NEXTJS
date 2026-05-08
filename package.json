@@ -10,5 +10,11 @@
     "dev:api": "npm run dev -w apps/api-next",
     "dev:web": "npm run dev -w apps/web-react",
     "build": "npm run build -ws"
+<<<<<<< HEAD
+=======
+  },
+  "dependencies": {
+    "next": "^16.2.6"
+>>>>>>> 2b5070d (feat: mejora de in-memory schema repository)
   }
 }

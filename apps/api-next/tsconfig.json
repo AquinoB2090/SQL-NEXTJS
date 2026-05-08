@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "lib": ["dom", "dom.iterable", "es2022"],
     "allowJs": false,
     "noEmit": true,
