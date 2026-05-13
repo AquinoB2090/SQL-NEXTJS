@@ -1,6 +1,7 @@
-import { SchemaRepositoryPort } from "@/src/domain/sql-validator/ports/schema-repository.port";
-import { SchemaColumn } from "@/src/domain/sql-validator/entities/schema-column";
-import { SchemaTable } from "@/src/domain/sql-validator/entities/schema-table";
+import type { SchemaRepositoryPort } from "@/src/domain/sql-validator/ports/schema-repository.port";
+import type { SchemaColumn } from "@/src/domain/sql-validator/entities/schema-column";
+import type { SchemaTable } from "@/src/domain/sql-validator/entities/schema-table";
+import { normalizeIdentifier } from "@/src/domain/sql-validator/utils/normalize-identifier";
 
 // Adapter de infraestructura: implementa el puerto con datos en memoria (MVP).
 export class InMemorySchemaRepository implements SchemaRepositoryPort {
@@ -51,11 +52,24 @@ export class InMemorySchemaRepository implements SchemaRepositoryPort {
   };
 
   existsTable(tableName: string): boolean {
-    return Object.hasOwn(this.schema, tableName.toLowerCase());
+    const normalizedTableName = normalizeIdentifier(tableName);
+
+    if (!normalizedTableName) {
+      return false;
+    }
+
+    return Object.hasOwn(this.schema, normalizedTableName);
   }
 
   existsColumn(tableName: string, columnName: string): boolean {
-    const table = this.schema[tableName.toLowerCase()];
+    const normalizedTableName = normalizeIdentifier(tableName);
+    const normalizedColumnName = normalizeIdentifier(columnName);
+
+    if (!normalizedTableName || !normalizedColumnName) {
+      return false;
+    }
+
+    const table = this.schema[normalizedTableName];
 
     if (!table) {
       return false;
@@ -63,18 +77,30 @@ export class InMemorySchemaRepository implements SchemaRepositoryPort {
 
     return table.columns.some(
       (column) =>
-        column.name.toLowerCase() === columnName.toLowerCase()
+        normalizeIdentifier(column.name) === normalizedColumnName
     );
   }
 
   findTable(tableName: string): SchemaTable | null {
-    return this.schema[tableName.toLowerCase()] || null;
+    const normalizedTableName = normalizeIdentifier(tableName);
+
+    if (!normalizedTableName) {
+      return null;
+    }
+
+    return this.schema[normalizedTableName] || null;
   }
 
   findColumn(
     tableName: string,
     columnName: string
   ): SchemaColumn | null {
+    const normalizedColumnName = normalizeIdentifier(columnName);
+
+    if (!normalizedColumnName) {
+      return null;
+    }
+
     const table = this.findTable(tableName);
 
     if (!table) {
@@ -84,9 +110,8 @@ export class InMemorySchemaRepository implements SchemaRepositoryPort {
     return (
       table.columns.find(
         (column) =>
-          column.name.toLowerCase() ===
-          columnName.toLowerCase()
+          normalizeIdentifier(column.name) === normalizedColumnName
       ) || null
     );
-  };
+  }
 }

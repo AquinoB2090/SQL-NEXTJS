@@ -47,3 +47,13 @@ Los contratos en `packages/sql-contracts` definen:
 - Se prioriza simplicidad y trazabilidad de capas sobre cobertura completa del compilador C++.
 - Se estandariza tipado de respuesta para reducir divergencias FE/BE.
 - Se deja preparado el crecimiento de adaptadores (DB real, parser avanzado) para sprintes posteriores.
+
+## Actualizacion M3 (RNF y robustez semantica)
+- El puerto `SchemaRepositoryPort` expone `findTable` y `findColumn` para metadata de schema, manteniendo `exists*` para transicion.
+- Se centraliza `normalizeIdentifier` en dominio para politica uniforme de case-insensitive (`trim + lowercase`).
+- La seleccion del adaptador de schema se resuelve en `composition` via `SCHEMA_SOURCE` y defaults por `NODE_ENV`.
+- Se incorpora suite de contrato reutilizable del puerto en `apps/api-next/src/test/contracts`.
+- Convencion de pruebas backend:
+  - `apps/api-next/src/test/contracts`: contratos de puertos/adaptadores
+  - `apps/api-next/src/test/domain`: reglas de dominio
+  - `apps/api-next/src/test/infrastructure`: factories/wiring de infraestructura

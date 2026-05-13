@@ -5,10 +5,12 @@
 ### Lo que ya esta implementado
 
 - Estructura hexagonal base documentada y aplicada en `apps/api-next` (domain/application/infra) con entrypoint Next.js.
-- Puerto de esquema `SchemaRepositoryPort` con metodos `existsTable` y `existsColumn`.
-- Adaptador `InMemorySchemaRepository` ya conectado en composition root.
-- Validacion semantica del servicio de dominio consume el puerto (no depende de infraestructura).
+- Puerto de esquema `SchemaRepositoryPort` evolucionado a v2 con `findTable`, `findColumn` y wrappers `exists*`.
+- Adaptador `InMemorySchemaRepository` tipado (`SchemaTable`, `SchemaColumn`, `DataType`) y conectado por factory en composition root.
+- Validacion semantica del servicio de dominio consume metadata del puerto y valida columna en `WHERE` (paso previo a type-check completo).
 - Contratos compartidos FE/BE y endpoint funcional `POST /api/sql/validate`.
+- Configuracion por ambiente para fuente de schema (`SCHEMA_SOURCE`) con defaults por `NODE_ENV`.
+- Suite de pruebas backend de contrato/dominio/infraestructura ejecutable por script.
 
 ### Evidencias clave
 
@@ -21,47 +23,48 @@
 ### Gap funcional contra referencia C++
 
 - En C++ el schema incluye metadatos de tipo (`INT`, `VARCHAR`, `FLOAT`) y resolucion case-insensitive en tabla y columna.
-- En Next actual el schema guarda solo `string[]` de columnas (sin tipos), y la semantica no valida compatibilidad de tipos en `WHERE`.
+- En Next ya existe schema tipado y resolucion case-insensitive robusta; aun falta el type-check completo de expresiones `WHERE` (solo se valida existencia de columna).
 
 ## 2) Estado por requerimiento M3
 
 ## RF-M3-01: Implementar repositorio de esquema en memoria
 
-**Estado:** Parcialmente cumplido (base creada).  
-**Falta para cerrar al 100%:**
+**Estado:** Cumplido.  
+**Cerrado en esta iteracion:**
 
-- Modelar columnas con tipo, no solo nombre.
-- Exponer lectura de metadata (tabla, columnas, tipos).
-- Preparar carga de schema desde configuracion (no hardcode estricto).
+- Modelo tipado con `SchemaTable`, `SchemaColumn`, `DataType`.
+- Metadata disponible por `findTable` y `findColumn`.
+- Integracion de fuente de schema por configuracion via factory.
 
 ## RF-M3-02: Resolver tabla/columnas con case-insensitive
 
-**Estado:** Cumplido en MVP para existencia (`toLowerCase()` en tabla y columna).  
-**Falta para robustez:**
+**Estado:** Cumplido con robustez.  
+**Cerrado en esta iteracion:**
 
-- Centralizar normalizacion (`normalizeIdentifier`) para evitar dispersion.
-- Definir politica uniforme (trim + lowercase + validacion de identificador vacio).
-- Cubrir pruebas con mayus/minus mixtas en tabla y columnas.
+- Normalizacion centralizada en `normalizeIdentifier`.
+- Politica uniforme `trim + lowercase` y manejo de cadena vacia.
+- Pruebas con mayus/minus mixtas, espacios y vacios para tabla/columna.
 
 ## RF-M3-03: Crear puertos/interfaces para desacoplar el dominio
 
-**Estado:** Parcialmente cumplido (existe 1 puerto).  
-**Falta para cerrar al 100%:**
+**Estado:** Cumplido.  
+**Cerrado en esta iteracion:**
 
-- Evolucionar el puerto para casos semanticos futuros (tipos de columna).
-- Separar contratos de lectura de schema en interfaz mas expresiva (no solo booleanos).
-- Mantener dominio sin dependencias a DTO/HTTP/Next (ya va bien).
+- Puerto v2 con metodos expresivos para lectura de metadata.
+- Dominio mantiene desacople de DTO/HTTP/Next.
+- Suite de contrato garantiza comportamiento estable para futuros adaptadores.
 
 ## PARTE DE JOSHUA
 
 ## RNF-M3: Config por ambiente y pruebas de contrato del repo
 
-**Estado:** Pendiente.  
-**Falta para cerrar al 100%:**
+**Estado:** Cumplido.  
+**Cerrado en esta iteracion:**
 
-- Estrategia de config por ambiente (dev/test/prod) para fuente de schema.
-- Suite de pruebas de contrato del repositorio (debe pasar para cualquier implementacion del puerto).
-- Scripts de test y convencion de carpetas de pruebas.
+- Estrategia de config por ambiente (`NODE_ENV` + `SCHEMA_SOURCE`) con defaults declarados.
+- Suite de contrato reusable del puerto en `src/test/contracts`.
+- Scripts de test en `apps/api-next/package.json` y script workspace `test:api`.
+- Convencion de carpetas: `src/test/contracts`, `src/test/domain`, `src/test/infrastructure`.
 
 ## 3) Plan recomendado de implementacion (orden real)
 
@@ -120,6 +123,9 @@
 - Validaciones semanticas de tabla/columna son case-insensitive con cobertura de pruebas.
 - Config por ambiente permite cambiar implementacion de repo sin tocar dominio.
 - Documentacion M3 actualizada con decisiones y limites.
+
+**Estado actual de DoD M3:** Cumplido para alcance de esta iteracion.  
+**Limite abierto:** type-check de tipos en expresiones `WHERE` queda como siguiente paso tecnico.
 
 ## 6) Riesgos actuales y mitigacion
 

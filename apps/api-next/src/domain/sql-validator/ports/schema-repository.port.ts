@@ -1,5 +1,5 @@
-import { SchemaColumn } from "../entities/schema-column";
-import { SchemaTable } from "../entities/schema-table";
+import type { SchemaColumn } from "../entities/schema-column";
+import type { SchemaTable } from "../entities/schema-table";
 
 // Port de dominio: define lo que el negocio necesita de un repositorio de esquema.
 export interface SchemaRepositoryPort {

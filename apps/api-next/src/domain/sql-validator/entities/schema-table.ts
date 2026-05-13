@@ -1,4 +1,4 @@
-import { SchemaColumn } from './schema-column';
+import type { SchemaColumn } from "./schema-column";
 
 export interface SchemaTable {
   name: string;

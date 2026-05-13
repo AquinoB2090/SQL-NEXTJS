@@ -49,6 +49,13 @@ docs/
 npm install
 ```
 
+## Variables de entorno (M3)
+
+Crear `.env` a partir de `.env.example`.
+
+- `NODE_ENV`: `development | test | production`
+- `SCHEMA_SOURCE`: fuente del schema (`in-memory` por defecto)
+
 ## Levantar backend
 
 ```bash
@@ -59,4 +66,10 @@ npm run dev:api
 
 ```bash
 npm run dev:web
+```
+
+## Pruebas backend (RNF-M3)
+
+```bash
+npm run test:api
 ```

@@ -9,6 +9,7 @@
   "scripts": {
     "dev:api": "npm run dev -w apps/api-next",
     "dev:web": "npm run dev -w apps/web-react",
-    "build": "npm run build -ws"
+    "build": "npm run build -ws",
+    "test:api": "npm run test -w apps/api-next"
   }
 }

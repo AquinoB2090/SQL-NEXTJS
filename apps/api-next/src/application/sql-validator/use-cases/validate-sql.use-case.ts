@@ -1,7 +1,7 @@
 import type { ValidateSqlResponse } from "@hex/sql-contracts";
-import { ValidateSqlInput } from "@/src/application/sql-validator/dto/validate-sql.dto";
+import type { ValidateSqlInput } from "@/src/application/sql-validator/dto/validate-sql.dto";
 import { SqlValidationService } from "@/src/domain/sql-validator/services/sql-validation.service";
-import { SchemaRepositoryPort } from "@/src/domain/sql-validator/ports/schema-repository.port";
+import type { SchemaRepositoryPort } from "@/src/domain/sql-validator/ports/schema-repository.port";
 
 // Application Layer: orquesta el caso de uso sin saber de HTTP ni de Next.js.
 export class ValidateSqlUseCase {

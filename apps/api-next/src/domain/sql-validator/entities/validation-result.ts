@@ -1,4 +1,4 @@
-import { ParsedQuery } from "./parsed-query";
+import type { ParsedQuery } from "./parsed-query";
 
 export interface ValidationResult {
   valid: boolean;

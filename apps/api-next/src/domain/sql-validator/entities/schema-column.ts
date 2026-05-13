@@ -1,4 +1,4 @@
-import { DataType } from './data-type';
+import type { DataType } from "./data-type";
 
 export interface SchemaColumn {
   name: string;
